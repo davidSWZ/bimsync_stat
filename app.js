@@ -60,22 +60,23 @@ app.get("/oauth/redirect", function(req, res){
         request.get(options, function(err, response, body){
           if(!err){
             var resultUser = JSON.parse(body);
-
-            user.create(
-              { id: resultUser.id,
-                name: resultUser.name,
-                username: resultUser.username,
-              }, function (err, user) {
-                  if (err) {
-                    return handleError(err);
-                  }else{
-                    console.log(user);
-                  }
-                 });
-
-          }
-          else{
-            console.log(err);
+            user.find({username:resultUser.username}).exec(function (err, user){
+              if(!user.length){
+                user.create(
+                  { id: resultUser.id,
+                    name: resultUser.name,
+                    username: resultUser.username,
+                  }, function (err, user) {
+                      if (err) {
+                        return handleError(err);
+                      }else{
+                        console.log(user);
+                      }
+                     });
+              }else{
+                console.log("The User already exists");
+              }
+            })
           }
         });
 //THEN REDIRECT TO THE HOME PAGE
