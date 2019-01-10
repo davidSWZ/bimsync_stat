@@ -1,8 +1,9 @@
-const express = require("express"),
-      app = express(),
-      request = require("request"),
-      mongoose = require("mongoose"),
-      oauth = require("./models/oauth");
+const express   = require("express"),
+      app       = express(),
+      request   = require("request"),
+      mongoose  = require("mongoose"),
+      oauths     = require("./models/oauth"),
+      user      = require("./models/users");
 
 app.set("view engine", "ejs");
 
@@ -28,33 +29,67 @@ app.get("/oauth/redirect", function(req, res){
   };
 
   function callback (err, response, body){
-    console.log(response);
+//IF NO ERROR PREPARE TO SAVE THE TOKEN INTO MONGODB
     if (!err && response.statusCode == 200) {
-//PREPARE TO SAVE THE TOKEN INTO MONGODB
       var result = JSON.parse(body);
       var access_token = result.access_token;
-      var refresh_token = result.refresh_token;
-      var token_type = result.token_type;
-      var expires_in = result.expires_in;
+      // var refresh_token = result.refresh_token;
+      // var token_type = result.token_type;
+      // var expires_in = result.expires_in;
 //SAVE INTO MONGODB
-      oauth.create(
-        { access_token: access_token,
-          refresh_token: refresh_token,
-          token_type: token_type,
-          expires_in: expires_in
+      oauths.create(
+        { access_token: result.access_token,
+          refresh_token: result.refresh_token,
+          token_type: result.token_type,
+          expires_in: result.expires_in
         }, function (err, oauth) {
-  if (err) {
-    return handleError(err);
-  }else{
-    console.log(oauth);
-  }
-});
+            if (err) {
+              return handleError(err);
+            }else{
+              console.log(oauth);
+            }
+           });
+//GET THE IDENTITY OF THE CURRENT USER
+        var oauth = "Bearer " + access_token;
+        var options = {
+          url:"https://api.bimsync.com/v2/user",
+          headers:{
+            Authorization: oauth
+          }
+        }
+        request.get(options, function(err, response, body){
+          if(!err){
+            var resultUser = JSON.parse(body);
+
+            user.create(
+              { id: resultUser.id,
+                name: resultUser.name,
+                username: resultUser.username,
+              }, function (err, user) {
+                  if (err) {
+                    return handleError(err);
+                  }else{
+                    console.log(user);
+                  }
+                 });
+
+          }
+          else{
+            console.log(err);
+          }
+        });
+//THEN REDIRECT TO THE HOME PAGE
       res.redirect("/");
     }else{
       console.log(err);
     }
   };
 
+// LAUNCH THE REQUEST TO
+// - GET ACCESS TOKEN, SAVE IT,
+// - GET THE CURRENT USER, SAVE IT,
+// - LINK THE USER AND THE TOKEN
+// - GET BACK TO THE HOME PAGE GIVING THE NAME OF THE USER
   request.post(options, callback);
 });
 
