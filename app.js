@@ -2,10 +2,18 @@ const express   = require("express"),
       app       = express(),
       request   = require("request"),
       mongoose  = require("mongoose"),
-      oauths     = require("./models/oauth"),
-      user      = require("./models/users");
+      oauths    = require("./models/oauth"),
+      user      = require("./models/users"),
+      session   = require('express-session');
+
 
 app.set("view engine", "ejs");
+app.use(session({
+  secret: 'bimsync secret',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}))
 
 mongoose.connect('mongodb://localhost/bimsync_stat', { useNewUrlParser: true });
 
@@ -13,12 +21,12 @@ mongoose.connect('mongodb://localhost/bimsync_stat', { useNewUrlParser: true });
 const clientID = "eUROn8VE4OBNoYb";
 const client_Secret = "R5trhSgAM4nZexn";
 
-//INDEX
+//===========================INDEX
 app.get("/", function(req, res){
   res.render("connection");
 });
 
-//GETTING OAUTH TOKENS AND REDIRECT TO THE INDEX
+//===========================GETTING OAUTH TOKENS AND REDIRECT TO THE INDEX
 app.get("/oauth/redirect", function(req, res){
   const requestToken = req.query.code;
   var options = {
@@ -29,27 +37,11 @@ app.get("/oauth/redirect", function(req, res){
   };
 
   function callback (err, response, body){
-//IF NO ERROR PREPARE TO SAVE THE TOKEN INTO MONGODB
+//IF NO ERROR GET THE TOKEN
     if (!err && response.statusCode == 200) {
       var result = JSON.parse(body);
       var access_token = result.access_token;
-      // var refresh_token = result.refresh_token;
-      // var token_type = result.token_type;
-      // var expires_in = result.expires_in;
-//SAVE INTO MONGODB
-      oauths.create(
-        { access_token: result.access_token,
-          refresh_token: result.refresh_token,
-          token_type: result.token_type,
-          expires_in: result.expires_in
-        }, function (err, oauth) {
-            if (err) {
-              return handleError(err);
-            }else{
-              console.log(oauth);
-            }
-           });
-//GET THE IDENTITY OF THE CURRENT USER
+//GET THE IDENTITY OF THE CURRENT USER WITH THE TOKEN
         var oauth = "Bearer " + access_token;
         var options = {
           url:"https://api.bimsync.com/v2/user",
@@ -60,17 +52,39 @@ app.get("/oauth/redirect", function(req, res){
         request.get(options, function(err, response, body){
           if(!err){
             var resultUser = JSON.parse(body);
-            user.find({username:resultUser.username}).exec(function (err, user){
-              if(!user.length){
+// CHECK IF THE USER ALREADY EXISTS
+            user.find({username:resultUser.username}).exec(function (err, currentUser){
+//IF NOT, SAVE THIS NEW USER
+              if(!currentUser.length){
                 user.create(
                   { id: resultUser.id,
                     name: resultUser.name,
                     username: resultUser.username,
-                  }, function (err, user) {
+                  }, function (err, createdUser) {
                       if (err) {
                         return handleError(err);
                       }else{
-                        console.log(user);
+//THEN SAVE THE OAUTH
+                      oauths.create(
+                          { access_token: result.access_token,
+                          refresh_token: result.refresh_token,
+                          token_type: result.token_type,
+                          expires_in: result.expires_in
+                        }, function (err, createdOauth) {
+                            if (err) {
+                              return handleError(err);
+                            }else{
+//THEN ASSOCIATE THIS OAUTH TO THE USER
+                              user.findOneAndUpdate({username:resultUser.username},{oauth:createdOauth}, function(err, foundUser){
+                                if(err){
+                                  console.log(err);
+                                }else{
+                                  session.auth = createdOauth.access_token;
+                                  console.log(session);
+                                }
+                              })
+                            }
+                           });
                       }
                      });
               }else{
@@ -79,6 +93,7 @@ app.get("/oauth/redirect", function(req, res){
             })
           }
         });
+
 //THEN REDIRECT TO THE HOME PAGE
       res.redirect("/");
     }else{
@@ -86,17 +101,13 @@ app.get("/oauth/redirect", function(req, res){
     }
   };
 
-// LAUNCH THE REQUEST TO
-// - GET ACCESS TOKEN, SAVE IT,
-// - GET THE CURRENT USER, SAVE IT,
-// - LINK THE USER AND THE TOKEN
-// - GET BACK TO THE HOME PAGE GIVING THE NAME OF THE USER
+// LAUNCH THE REQUEST
   request.post(options, callback);
 });
 
-//SHOW THE PROJECTS OF THE USER
+//===================SHOW THE PROJECTS OF THE USER
 app.get("/projects", function (req, res){
-  var oauth = "Bearer " + "Wj4Kh0tlmxRMLjcGxQTPnO";
+  var oauth = "Bearer " + session.auth;
   var options = {
     url:"https://api.bimsync.com/v2/projects",
     headers:{
@@ -117,11 +128,3 @@ app.get("/projects", function (req, res){
 app.listen(3000, process.env.IP, function(){
   console.log("the app run...");
 });
-
-//
-//
-// User submits credentials
-// Express handles /login POST request from client in a route handler
-// /login POST handler requests an access token from an OAuth 2 provider
-// Access token needs to be stored and an associated cookie (signed) sent back in response to client
-// In all further api requests from the client, if cookie is present, corresponding token is retrieved from store server side and used as a bearer token header for ongoing request to separate endpoint.
