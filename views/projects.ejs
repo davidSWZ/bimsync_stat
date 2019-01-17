@@ -1,0 +1,13 @@
+<h1>Projects</h1>
+
+<form class="" action="/projects/models" method="post">
+  <label for="list-projects">---- CHOISISSEZ UN PROJET ----</label>
+    <select id="list-projects" name="project">
+      <% result.forEach(function(project){ %>
+        <option value="<%= project["name"]%>"> <%= project["name"]%> </option>
+      <% }); %>
+    </select>
+    <input type="submit" name="Voir les modèles du projet" value="Voir les modèles du projet">
+</form>
+
+<h1> <%= result.length %> projects </h1>
