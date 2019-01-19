@@ -8,6 +8,7 @@ const express   = require("express"),
       bodyParser = require("body-parser");
 
 app.set("view engine", "ejs");
+app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(session({
   secret: 'bimsync secret',
@@ -56,6 +57,7 @@ app.get("/oauth/redirect", function(req, res){
             user.find({username:resultUser.username}).populate("oauth").exec(function (err, currentUser){
 //IF NOT, SAVE THIS NEW USER
               if(!currentUser.length){
+                console.log("this user is new, we create his account...")
                 user.create(
                   { id: resultUser.id,
                     name: resultUser.name,
@@ -79,9 +81,8 @@ app.get("/oauth/redirect", function(req, res){
                                 if(err){
                                   console.log(err);
                                 } else {
-                                  console.log("The user obtains a oauth");
+                                  console.log("The user is created and obtained an authorization!");
                                   session.auth = createdOauth.access_token;
-                                  console.log(session);
                                 }
                               })
                             }
@@ -91,7 +92,7 @@ app.get("/oauth/redirect", function(req, res){
                 );
               } else {
 //IF THE USER ALREADY EXISTS
-                console.log("The User already exists, his oauth is: "+ currentUser[0].oauth);
+                console.log("The user already exists, we update his authorization...");
                 var optionsRefresh = {
                   url: "https://api.bimsync.com/oauth2/token?grant_type=refresh_token&refresh_token="+currentUser[0].oauth.refresh_token+"&client_id="+clientID+"&client_secret="+client_Secret+"&redirect_uri=http://localhost:3000/oauth/redirect",
                   headers: {
@@ -107,7 +108,7 @@ app.get("/oauth/redirect", function(req, res){
                          access_token: resultRefresh.access_token,
                          refresh_token: resultRefresh.refresh_token
                        }, {new:true},function (err, updatedOauth){
-                          console.log("Access token mis à jour...");
+                          console.log("Authorization updated!");
                           session.auth = updatedOauth.access_token;
                      })
                   } else {
