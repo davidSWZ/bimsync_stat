@@ -1,6 +1,6 @@
-<h1>Projects</h1>
+<% include ./partials/header %>
 
-<form class="" action="/projects/models" method="post">
+<!-- <form class="" action="/projects/models" method="post">
   <label for="list-projects">---- CHOISISSEZ UN PROJET ----</label>
     <select id="list-projects" name="project">
       <% result.forEach(function(project){ %>
@@ -8,6 +8,42 @@
       <% }); %>
     </select>
     <input type="submit" name="Voir les modèles du projet" value="Voir les modèles du projet">
-</form>
+</form> -->
 
-<h1> <%= result.length %> projects </h1>
+
+<div style="margin:0 10px 10px 0;">
+  <canvas id="myChart" width="1000em" height="1000em"></canvas>
+</div>
+
+<script type="text/javascript">
+  var labelsStringified = <%- JSON.stringify(labels) %>;
+  var backgroundColorsStringified = <%- JSON.stringify(backgroundColors) %>;
+  var borderColorsStringified = <%- JSON.stringify(borderColors) %>;
+
+  var ctx = document.getElementById("myChart").getContext('2d');
+  var myChart = new Chart(ctx, {
+    type: 'horizontalBar',
+    data: {
+        labels: labelsStringified,
+        datasets: [{
+            label: 'Revisions by project',
+            data: [<%=datas%>],
+            backgroundColor: backgroundColorsStringified,
+            borderColor: borderColorsStringified,
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive:true,
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+  });
+</script>
+
+<% include ./partials/footer %>
