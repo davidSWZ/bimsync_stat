@@ -17,7 +17,8 @@ app.use(session({
   cookie: { secure: true }
 }))
 
-mongoose.connect('mongodb://localhost/bimsync_stat', { useNewUrlParser: true });
+var url = process.env.DATABASEURL || 'mongodb://localhost/bimsync_stat';
+mongoose.connect(url ,{ useNewUrlParser: true });
 
 //PERSONAL CLIENT CODE (DO NOT SEND ON GITHUB)
 const clientID = "eUROn8VE4OBNoYb";
