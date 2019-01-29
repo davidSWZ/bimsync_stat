@@ -4,7 +4,7 @@ const express   = require("express"),
       mongoose  = require("mongoose"),
       oauths    = require("./models/oauth"),
       user      = require("./models/users"),
-      session   = require('express-session'),
+      session   = require('cookie-session'),
       bodyParser = require("body-parser");
 
 app.set("view engine", "ejs");
