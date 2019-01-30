@@ -8,7 +8,7 @@ const express   = require("express"),
       bodyParser = require("body-parser");
 
 app.set("view engine", "ejs");
-app.use("/css", express.static(__dirname + '/public/css'));
+// app.use("/css", express.static(__dirname + '/public/css'));
 app.use(express.static(__dirname + '/public'));
 
 app.use(bodyParser.urlencoded({extended:true}));
