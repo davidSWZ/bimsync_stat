@@ -8,7 +8,6 @@ const express   = require("express"),
       bodyParser = require("body-parser");
 
 app.set("view engine", "ejs");
-// app.use("/css", express.static(__dirname + '/public/css'));
 app.use(express.static(__dirname + '/public'));
 
 app.use(bodyParser.urlencoded({extended:true}));
@@ -35,7 +34,7 @@ app.get("/", function(req, res){
 app.get("/oauth/redirect", function(req, res){
   const requestToken = req.query.code;
   var options = {
-    url: "https://api.bimsync.com/oauth2/token?grant_type=authorization_code&code="+requestToken+"&client_id="+clientID+"&client_secret="+client_Secret+"&redirect_uri=http://localhost:3000/oauth/redirect",
+    url: "https://api.bimsync.com/oauth2/token?grant_type=authorization_code&code="+requestToken+"&client_id="+clientID+"&client_secret="+client_Secret+"&redirect_uri=https://bimsync-analytics.herokuapp.com/oauth/redirect",
     headers: {
               "Content-Type": "application/x-www-form-urlencoded",
              }
@@ -97,7 +96,9 @@ app.get("/oauth/redirect", function(req, res){
 //IF THE USER ALREADY EXISTS
                 console.log("The user already exists, we update his authorization...");
                 var optionsRefresh = {
-                  url: "https://api.bimsync.com/oauth2/token?grant_type=refresh_token&refresh_token="+currentUser[0].oauth.refresh_token+"&client_id="+clientID+"&client_secret="+client_Secret+"&redirect_uri=http://localhost:3000/oauth/redirect",
+                  // url: "https://api.bimsync.com/oauth2/token?grant_type=refresh_token&refresh_token="+currentUser[0].oauth.refresh_token+"&client_id="+clientID+"&client_secret="+client_Secret+"&redirect_uri=http://localhost:3000/oauth/redirect",
+                  url: "https://api.bimsync.com/oauth2/token?grant_type=refresh_token&refresh_token="+currentUser[0].oauth.refresh_token+"&client_id="+clientID+"&client_secret="+client_Secret+"&redirect_uri=https://bimsync-analytics.herokuapp.com/oauth/redirect",
+
                   headers: {
                             "Content-Type": "application/x-www-form-urlencoded",
                            }
