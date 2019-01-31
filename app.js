@@ -202,7 +202,7 @@ app.get("/projects", isLoggedIn, function (req, res){
 
 app.get("/logout", function(req,res){
   console.log(session.auth);
-  req.session=null;
+  session.auth=null;
   console.log(session.auth);
   res.redirect("/");
 });
