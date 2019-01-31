@@ -201,7 +201,9 @@ app.get("/projects", isLoggedIn, function (req, res){
 });
 
 app.get("/logout", function(req,res){
-  req.logout();
+  console.log(session.auth);
+  req.session=null;
+  console.log(session.auth);
   res.redirect("/");
 });
 
