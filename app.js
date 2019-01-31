@@ -1,17 +1,27 @@
-const express   = require("express"),
-      app       = express(),
-      request   = require("request"),
-      mongoose  = require("mongoose"),
-      oauths    = require("./models/oauth"),
-      user      = require("./models/users"),
-      session   = require('cookie-session'),
+//===================Import FRAMEWORKS et LIBRAIRIES=====================
+const express    = require("express"),
+      app        = express(),
+      request    = require("request"),
+      mongoose   = require("mongoose"),
+      oauths     = require("./models/oauth"),
+      user       = require("./models/users"),
+      session    = require('cookie-session'),
       bodyParser = require("body-parser"),
-      passport = require("passport");
+      passport   = require("passport"),
+      env        = require('dotenv').config();
 
+//===================PARAMETRAGE APP ====================================
+
+//Utilisation d'ejs comme moteur de page web
 app.set("view engine", "ejs");
+
+//Utilisation du dossier public pour les élements statics (css, jss etc)
 app.use(express.static(__dirname + '/public'));
 
+//Utilisation de body parser pour convertir la réponse des requêtes
 app.use(bodyParser.urlencoded({extended:true}));
+
+//Paramétrage de la session utilisateur
 app.use(session({
   secret: 'bimsync secret',
   resave: false,
@@ -19,11 +29,14 @@ app.use(session({
   cookie: { secure: true }
 }))
 
+//Utiliser session.auth comme référence lorsque l'on appelle sessionOauth dans une page ejs
 app.use(function(req,res,next){
     res.locals.sessionOauth =session.auth;
     next();
 });
 
+//Paramétrage du chemin pour se connecter à MongoDB
+//Utiliser l'url mongoDB en fonction de l'environnement, si pas d'environnement envoyer vers localhost
 var url = process.env.DATABASEURL || 'mongodb://localhost/bimsync_stat';
 mongoose.connect(url ,{ useNewUrlParser: true });
 
@@ -40,7 +53,7 @@ app.get("/", function(req, res){
 app.get("/oauth/redirect", function(req, res){
   const requestToken = req.query.code;
   var options = {
-    url: "https://api.bimsync.com/oauth2/token?grant_type=authorization_code&code="+requestToken+"&client_id="+clientID+"&client_secret="+client_Secret+"&redirect_uri=https://bimsync-analytics.herokuapp.com/oauth/redirect",
+    url: "https://api.bimsync.com/oauth2/token?grant_type=authorization_code&code="+requestToken+"&client_id="+process.env.clientID+"&client_secret="+process.env.client_Secret+"&redirect_uri="+process.env.redirect_URL,
     headers: {
               "Content-Type": "application/x-www-form-urlencoded",
              }
