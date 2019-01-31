@@ -23,8 +23,11 @@
         BIMSYNC Analytics
       </a>
       <div class="mr-0">
-        <a class="text-white" href="https://bimsync.com/login/oauth2/authorize?response_type=code&state=state&client_id=eUROn8VE4OBNoYb&redirect_uri=https://bimsync-analytics.herokuapp.com/oauth/redirect">Connect to BIMSYNC</a>
-        <a class="text-white" href="/logout">Log out</a>
+        <% if(!sessionOauth){ %>
+          <a class="text-white" href="https://bimsync.com/login/oauth2/authorize?response_type=code&state=state&client_id=eUROn8VE4OBNoYb&redirect_uri=https://bimsync-analytics.herokuapp.com/oauth/redirect">Connect to BIMSYNC</a>
+        <% } else{ %>
+          <a class="text-white" href="/logout">Log out</a>
+        <% } %>
       </div>
 
     </nav>

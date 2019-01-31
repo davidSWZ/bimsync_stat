@@ -19,6 +19,11 @@ app.use(session({
   cookie: { secure: true }
 }))
 
+app.use(function(req,res,next){
+    res.locals.sessionOauth =session.auth;
+    next();
+});
+
 var url = process.env.DATABASEURL || 'mongodb://localhost/bimsync_stat';
 mongoose.connect(url ,{ useNewUrlParser: true });
 
