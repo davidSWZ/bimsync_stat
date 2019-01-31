@@ -1,5 +1,7 @@
 const express = require("express");
-      router = express.Router();
+      router = express.Router(),
+      session    = require('cookie-session');
+
 
 router.get("/", function(req,res){
 //supprime le token et la session

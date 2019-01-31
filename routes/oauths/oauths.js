@@ -1,5 +1,13 @@
-const express = require("express"),
-      router = express.Router();
+const express    = require("express"),
+      router     = express.Router(),
+      user       = require("../../models/users"),
+      oauths     = require("../../models/oauth"),
+      session    = require('cookie-session'),
+      mongoose   = require("mongoose"),
+      bodyParser = require("body-parser"),
+      request    = require("request"),
+      env        = require('dotenv').config();
+
 
 //===========================GETTING OAUTH TOKENS AND REDIRECT TO THE INDEX
 router.get("/", function(req, res){
@@ -67,11 +75,9 @@ router.get("/", function(req, res){
 //IF THE USER ALREADY EXISTS
                 console.log("The user already exists, we update his authorization...");
                 var optionsRefresh = {
-                  // url: "https://api.bimsync.com/oauth2/token?grant_type=refresh_token&refresh_token="+currentUser[0].oauth.refresh_token+"&client_id="+clientID+"&client_secret="+client_Secret+"&redirect_uri=http://localhost:3000/oauth/redirect",
                   url: "https://api.bimsync.com/oauth2/token?grant_type=refresh_token&refresh_token="+currentUser[0].oauth.refresh_token+"&client_id="+process.env.clientID+"&client_secret="+process.env.client_Secret+"&redirect_uri="+process.env.redirect_URL,
-
                   headers: {
-                            "Content-Type": "application/x-www-form-urlencoded",
+                            "Content-Type": "application/x-www-form-urlencoded"
                            }
                 };
                 function callbackRefresh (err, response, bodyRefresh){

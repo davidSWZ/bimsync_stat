@@ -1,6 +1,10 @@
 const express    = require("express"),
       router     = express.Router(),
-      middleware = require("../../middleware");
+      middleware = require("../../middleware"),
+      request    = require("request"),
+      session    = require('cookie-session');
+
+
 
 //===================SHOW THE PROJECTS OF THE USER
 router.get("/", middleware.isLoggedIn, function (req, res){
