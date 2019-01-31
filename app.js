@@ -5,7 +5,8 @@ const express   = require("express"),
       oauths    = require("./models/oauth"),
       user      = require("./models/users"),
       session   = require('cookie-session'),
-      bodyParser = require("body-parser");
+      bodyParser = require("body-parser"),
+      passport = require("passport");
 
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + '/public'));
@@ -124,7 +125,6 @@ app.get("/oauth/redirect", function(req, res){
               }
             });
           }
-
       });
       res.redirect("/");
     } else {
@@ -136,7 +136,7 @@ app.get("/oauth/redirect", function(req, res){
 });
 
 //===================SHOW THE PROJECTS OF THE USER
-app.get("/projects", function (req, res){
+app.get("/projects", isLoggedIn, function (req, res){
   var oauth = "Bearer " + session.auth;
   var options = {
     url:"https://api.bimsync.com/v2/projects",
@@ -200,11 +200,25 @@ app.get("/projects", function (req, res){
   });
 });
 
+app.get("/logout", function(req,res){
+  req.logout();
+  res.redirect("/");
+});
 
 app.post("/projects/models", function(req, res){
   res.send(req.body);
 });
 
+//=======MIDDLEWARE=========
+function isLoggedIn(req, res, next){
+  if(session.auth){
+    console.log(session.auth);
+    return next();
+  }else{
+    console.log("no user");
+    res.redirect("/");
+  }
+};
 app.listen(process.env.PORT || 3000, process.env.IP, function(){
   console.log("the app run...");
 });
