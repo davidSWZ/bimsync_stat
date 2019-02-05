@@ -71,7 +71,7 @@ p {
 #title-sidebar{
   font-size: 18px;
   margin: 15px;
-  padding: 10px 15px 25px 15px;
+  padding: 10px 5px 25px 5px;
   border-bottom: 1px solid #cacbcc;
   color: #ffffff;
 }
@@ -112,4 +112,17 @@ ul ul a {
     padding-left: 30px !important;
     background: #364150;
     border-bottom: 1px solid #414e5f;
+}
+
+footer p{
+  position: absolute;
+  display: block;
+  font-size: 10px;
+  bottom: 0;
+  color: #5e6b7d !important;
+  margin: 0 10px;
+}
+
+footer #source{
+  bottom: 20px;
 }
