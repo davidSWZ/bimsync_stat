@@ -26,8 +26,8 @@ router.get("/", middleware.isLoggedIn, function (req, res){
       var fn = function asyncGetRevisions(i){
         // Setting URL and headers for request
               labels.push(i.name);
-              backgroundColors.push("#7386D5");
-              borderColors.push('rgba(140,99,132,1)');
+              backgroundColors.push("#364150");
+              borderColors.push('#15191f');
                var modelOptions = {
                  url:"https://api.bimsync.com/v2/projects/"+ i.id +"/revisions",
                  headers:{
