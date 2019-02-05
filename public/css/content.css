@@ -1,0 +1,24 @@
+#content{
+  background: #f0f1f3;
+  width: 100%;
+  font-family: "muli", sans-serif;
+}
+
+#content-navbar{
+  border-bottom: 1px solid #777;
+  display: flex;
+}
+
+#sidebarCollapse{
+    background: #364150;
+    border: 0px;
+    margin-left: 10px;
+}
+
+.connect-user{
+  color: #364150 !important;
+}
+
+.connect-user i{
+  font-size: 25px;
+}

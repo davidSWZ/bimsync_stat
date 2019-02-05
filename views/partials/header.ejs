@@ -3,7 +3,8 @@
 
   <head>
     <meta charset="utf-8">
-    <title>BIMSYNC Analytics</title>
+    <!-- fontawesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <!-- Bootstrap -->
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
     <!-- Chart.js -->
@@ -13,74 +14,70 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/sidebar.css">
+    <link rel="stylesheet" href="/css/content.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <!-- Icon du header -->
+    <link rel="shortcut icon" href="images/Chart.png" type="image/x-icon" />
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Muli:200,300,400,700" rel="stylesheet">
+
+    <title>BIMSYNC ANALYTICS</title>
   </head>
 
   <body>
 
-    <nav class="navbar navbar-light" id="horizontalNavBar">
-      <a class="navbar-brand text-white" href="#">
-        <img src="images/logo-bimsync.png" width="25" height="30" class="d-inline-block align-top" alt="">
-        BIMSYNC Analytics
-      </a>
-      <div class="mr-0">
-        <% if(!sessionOauth){ %>
-          <a class="text-white" href="https://bimsync.com/login/oauth2/authorize?response_type=code&state=state&client_id=eUROn8VE4OBNoYb&redirect_uri=<%=process.env.redirect_URL%>">Connect to BIMSYNC</a>
-        <% } else{ %>
-          <a class="text-white" href="/logout">Log out</a>
-        <% } %>
-      </div>
-
-    </nav>
-
     <div class="wrapper">
+<!-- SIDEBAR -->
       <nav id="sidebar">
+        <i src="images/Chart.png" alt="Logo" height="20px" width="20px"></i> <p id="title-sidebar">BIMSYNC ANALYTICS</p>
         <ul class="list-unstyled ">
             <li>
-                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">BIM Management</a>
+                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-cube"></i> BIM management</a>
                 <ul class="collapse list-unstyled" id="homeSubmenu">
                     <li>
-                        <a href="/projects">Revisions par projet</a>
+                        <a href="/projects">Revisions per project</a>
                     </li>
                     <li>
-                        <a href="#">Models</a>
-                    </li>
-                    <li>
-                        <a href="#">Users</a>
+                        <a href="#">Projects data</a>
                     </li>
                 </ul>
             </li>
             <li>
-                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Chef de projet</a>
+                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"> <i class="fas fa-project-diagram"></i> Project manager</a>
                 <ul class="collapse list-unstyled" id="pageSubmenu">
                     <li>
-                        <a href="#">En attente</a>
-                    </li>
-                    <li>
-                        <a href="#">En attente</a>
-                    </li>
-                    <li>
-                        <a href="#">En attente</a>
+                        <a href="#">Work in progress...</a>
                     </li>
                 </ul>
             </li>
             <li>
-                <a href="#pageSubmenu2" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Ingénieur GC</a>
+                <a href="#pageSubmenu2" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <i class="fas fa-database"></i> IFC data
+                </a>
                 <ul class="collapse list-unstyled" id="pageSubmenu2">
                     <li>
-                        <a href="#">En attente</a>
-                    </li>
-                    <li>
-                        <a href="#">En attente</a>
-                    </li>
-                    <li>
-                        <a href="#">En attente</a>
+                        <a href="#">Work in progress...</a>
                     </li>
                 </ul>
             </li>
 
         </ul>
       </nav>
+
+<!-- CONTENU DE LA PAGE -->
       <div id="content">
-        <button type="button" id="sidebarCollapse" class="btn btn-info">
-            <i class="fas fa-align-left"></i>
-        </button>
+<!-- NAVBAR DU CONTENU -->
+        <nav id="content-navbar" class="navbar navbar-light" id="horizontalNavBar">
+          <button type="button" id="sidebarCollapse" class="btn text-white">
+              <i class="fas fa-align-left"></i>
+          </button>
+          <div id="connection" class="mr-0">
+            <% if(!sessionOauth){ %>
+              <a class="connect-user" href="https://bimsync.com/login/oauth2/authorize?response_type=code&state=state&client_id=eUROn8VE4OBNoYb&redirect_uri=<%=process.env.redirect_URL%>">
+                <i class="fas fa-user"></i> Connect
+              </a>
+            <% } else{ %>
+              <a class="connect-user" href="/logout"><i class="fas fa-sign-out-alt"></i> Log out</a>
+            <% } %>
+          </div>
+        </nav>
