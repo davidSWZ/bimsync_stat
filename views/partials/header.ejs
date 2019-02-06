@@ -78,7 +78,7 @@
           </button>
           <div id="connection" class="mr-0">
             <% if(!sessionOauth){ %>
-              <a class="connect-user" href="https://bimsync.com/login/oauth2/authorize?response_type=code&state=state&client_id=eUROn8VE4OBNoYb&redirect_uri=<%=process.env.redirect_URL%>">
+              <a class="connect-user" href="https://bimsync.com/login/oauth2/authorize?response_type=code&state=state&client_id=<%=process.env.clientID%>&redirect_uri=<%=process.env.redirect_URL%>">
                 <i class="fas fa-user"></i> Connect
               </a>
             <% } else{ %>
