@@ -25,14 +25,7 @@ a[data-toggle="collapse"] {
     transform: translateY(-50%);
 }
 
-@media (max-width: 768px) {
-    #sidebar {
-        margin-left: -250px;
-    }
-    #sidebar.active {
-        margin-left: 0;
-    }
-}
+
 
 
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
@@ -134,6 +127,36 @@ footer #source{
 
 footer button{
   bottom: 40px;
+}
+
+#sidebar a .media, #title-sidebar .media{
+  display: inline;
+}
+
+@media (max-width: 768px) {
+    #sidebar {
+        margin-left: -50px;
+        min-width: 50px !important;
+        max-width: 50px !important;
+        overflow: visible;
+    }
+
+    #sidebar.active {
+        margin-left: 0;
+    }
+
+    .media, .dropdown-toggle::after{
+        display: none !important;
+    }
+
+    .sous-menu{
+        font-size: 9px !important;
+        width: 50px;
+        word-wrap: break-word;
+        padding: 10px 4px !important;
+        text-align: center;
+    }
+
 }
 
 @media print

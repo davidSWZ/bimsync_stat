@@ -29,40 +29,40 @@
     <div class="wrapper">
 <!-- SIDEBAR -->
       <nav id="sidebar">
-        <i src="images/Chart.png" alt="Logo" height="20px" width="20px"></i> <p id="title-sidebar"><i class="far fa-chart-bar"></i> BIMSYNC ANALYTICS</p>
+        <i src="images/Chart.png" alt="Logo" height="20px" width="20px"></i> <p id="title-sidebar"><i class="far fa-chart-bar"></i><span class="media"> BIMSYNC ANALYTICS</span></p>
         <ul class="list-unstyled ">
             <li>
-                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-cube"></i> BIM management</a>
+                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-cube"></i><span class="media"> BIM management</span></a>
                 <ul class="collapse list-unstyled" id="homeSubmenu">
                     <li>
-                        <a href="/projects">Revisions per project</a>
+                        <a class="sous-menu" href="/projects">Revisions per project</a>
                     </li>
                     <li>
-                        <a href="#">Projects data</a>
+                        <a class="sous-menu" href="#">Projects data</a>
                     </li>
                 </ul>
             </li>
             <li>
-                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"> <i class="fas fa-project-diagram"></i> Project manager</a>
+                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"> <i class="fas fa-project-diagram"></i><span class="media"> Project manager</span></a>
                 <ul class="collapse list-unstyled" id="pageSubmenu">
                     <li>
-                        <a href="#">Work in progress...</a>
+                        <a class="sous-menu" href="#">Work in progress...</a>
                     </li>
                 </ul>
             </li>
             <li>
                 <a href="#pageSubmenu2" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                    <i class="fas fa-database"></i> IFC data
+                    <i class="fas fa-database"></i><span class="media"> IFC data<span>
                 </a>
                 <ul class="collapse list-unstyled" id="pageSubmenu2">
                     <li>
-                        <a href="#">Work in progress...</a>
+                        <a class="sous-menu" href="#">Work in progress...</a>
                     </li>
                 </ul>
             </li>
 
         </ul>
-        <footer>
+        <footer class="media">
           <button onclick="window.print()">Print This Page</button>
           <p id="source">Developed by David SWIATKIEWIEZ</p>
           <p>View the <a href="https://github.com/davidSWZ/bimsync_stat">source</a> on Github</p>
