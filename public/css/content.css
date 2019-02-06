@@ -22,3 +22,23 @@
 .connect-user i{
   font-size: 25px;
 }
+
+.myChart{
+  width: 47%;
+  padding: 10px;
+  margin: 5px;
+  border: 1px solid #e0e1e4;
+}
+
+#chart1{
+  float: left;
+}
+
+#chart2{
+  float: right;
+}
+
+@media (max-width: 500px) {
+    .myChart {
+        float: none !important;
+        width: 95%;
