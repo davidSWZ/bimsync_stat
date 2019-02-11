@@ -8,7 +8,7 @@ middlewareObj.isLoggedIn = function(req, res, next){
   if(req.user){
     return next();
   }else{
-    console.log("no user");
+    req.flash("error", "You are not logged in yet, please connect to your BIMSYNC account first!");
     res.redirect("/");
 
   }

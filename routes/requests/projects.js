@@ -4,8 +4,6 @@ const express    = require("express"),
       request    = require("request"),
       session    = require('cookie-session');
 
-
-
 //===================SHOW THE PROJECTS OF THE USER
 router.get("/", middleware.isLoggedIn, function (req, res){
   var oauth = "Bearer " + req.user.access_token;
@@ -54,7 +52,6 @@ router.get("/", middleware.isLoggedIn, function (req, res){
       var resultArray = Promise.all(actions); // pass array of promises
 
       resultArray.then(data =>{
-            console.log(labels);
             res.render("requests/projects", {
               result:result ,
               labels:labels ,

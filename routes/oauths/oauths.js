@@ -14,6 +14,7 @@ const express    = require("express"),
 router.get("/", passport.authenticate('oauth2'));
 
 router.get("/redirect", passport.authenticate('oauth2'), function(req, res){
+  req.flash("success", "Welcome to BIMSYNC Analytics, go on and try our dashboards.");
   res.redirect("/");
 });
 

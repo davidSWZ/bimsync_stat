@@ -1,14 +1,15 @@
 //===================Import FRAMEWORKS et LIBRAIRIES============================
-const express    = require("express"),
-      app        = express(),
-      request    = require("request"),
-      mongoose   = require("mongoose"),
-      user       = require("./models/users"),
-      cookieSession    = require('cookie-session'),
-      bodyParser = require("body-parser"),
-      passport   = require("passport"),
+const express       = require("express"),
+      app           = express(),
+      request       = require("request"),
+      mongoose      = require("mongoose"),
+      user          = require("./models/users"),
+      cookieSession = require('cookie-session'),
+      bodyParser    = require("body-parser"),
+      passport      = require("passport"),
       passportSetup = require("./config/passport-setup"),
-      env        = require('dotenv').config();
+      env           = require('dotenv').config(),
+      flash         = require("connect-flash");
 
 //===================PARAMETRAGE APP ===========================================
 
@@ -34,10 +35,15 @@ app.use(cookieSession({
 app.use(passport.initialize());
 app.use(passport.session());
 
+//Utilisation des messages flash
+app.use(flash());
+
 //Utiliser session.auth comme référence lorsque l'on appelle sessionOauth dans
 //une page ejs
 app.use(function(req,res,next){
     res.locals.user =req.user;
+    res.locals.error = req.flash("error");
+    res.locals.success = req.flash("success");
     next();
 });
 
