@@ -9,6 +9,10 @@
   display: flex;
 }
 
+#userName{
+  margin-right: 20px;
+}
+
 #sidebarCollapse{
     background: #364150;
     border: 0px;

@@ -3,11 +3,11 @@ const express    = require("express"),
       app        = express(),
       request    = require("request"),
       mongoose   = require("mongoose"),
-      oauths     = require("./models/oauth"),
       user       = require("./models/users"),
-      session    = require('cookie-session'),
+      cookieSession    = require('cookie-session'),
       bodyParser = require("body-parser"),
       passport   = require("passport"),
+      passportSetup = require("./config/passport-setup"),
       env        = require('dotenv').config();
 
 //===================PARAMETRAGE APP ===========================================
@@ -22,24 +22,29 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({extended:true}));
 
 //Paramétrage de la session utilisateur
-app.use(session({
-  secret: 'bimsync secret',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: true }
-}))
+app.use(cookieSession({
+  secret:process.env.secret,
+  keys:[process.env.cookieKey],
+  cookie:{
+    maxAge:59*60*1000
+  }
+}));
+
+//Initialisation de passport et utilisation de la session de passport
+app.use(passport.initialize());
+app.use(passport.session());
 
 //Utiliser session.auth comme référence lorsque l'on appelle sessionOauth dans
 //une page ejs
 app.use(function(req,res,next){
-    res.locals.sessionOauth =session.auth;
+    res.locals.user =req.user;
     next();
 });
 
 //=====================MONGODB==================================================
 //Utiliser l'url mongoDB en fonction de l'environnement, si pas d'environnement
 //envoyer vers localhost
-var url = process.env.DATABASEURL || 'mongodb://localhost/bimsync_stat';
+var url = process.env.DATABASEURL;
 mongoose.connect(url ,{ useNewUrlParser: true });
 
 //===========================IMPORTE LES ROUTES=================================
@@ -50,7 +55,7 @@ const indexRoute    = require("./routes/index"),
 
 //===========================DECLARE LES ROUTES=================================
 app.use("/", indexRoute);
-app.use("/oauth/redirect", oauthRoute);
+app.use("/oauth", oauthRoute);
 app.use("/logout", logoutRoute);
 app.use("/projects", projectsRoute);
 

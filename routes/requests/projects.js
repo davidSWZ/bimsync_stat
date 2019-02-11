@@ -8,7 +8,7 @@ const express    = require("express"),
 
 //===================SHOW THE PROJECTS OF THE USER
 router.get("/", middleware.isLoggedIn, function (req, res){
-  var oauth = "Bearer " + session.auth;
+  var oauth = "Bearer " + req.user.access_token;
   var options = {
     url:"https://api.bimsync.com/v2/projects",
     headers:{

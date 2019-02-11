@@ -77,11 +77,12 @@
               <i class="fas fa-align-left"></i>
           </button>
           <div id="connection" class="mr-0">
-            <% if(!sessionOauth){ %>
-              <a class="connect-user" href="https://bimsync.com/login/oauth2/authorize?response_type=code&state=state&client_id=<%=process.env.clientID%>&redirect_uri=<%=process.env.redirect_URL%>">
+            <% if(!user){ %>
+              <a class="connect-user" href="/oauth">
                 <i class="fas fa-user"></i> Connect
               </a>
             <% } else{ %>
+              <span id="userName">Welcome <%=user.name%></span>
               <a class="connect-user" href="/logout"><i class="fas fa-sign-out-alt"></i> Log out</a>
             <% } %>
           </div>

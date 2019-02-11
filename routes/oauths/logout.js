@@ -5,7 +5,7 @@ const express = require("express");
 
 router.get("/", function(req,res){
 //supprime le token et la session
-  session.auth=null;
+  req.logout();
 //redirige sur la page d'accueil du site
   res.redirect("/");
 });

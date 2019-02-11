@@ -4,10 +4,8 @@ var userSchema = new mongoose.Schema({
   id: String,
   name: String,
   username:String,
-  oauth: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "oauth"
-  }
+  access_token: String,
+  refresh_token: String
 });
 
 var user = mongoose.model("user", userSchema);
