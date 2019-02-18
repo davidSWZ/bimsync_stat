@@ -21,6 +21,7 @@ app.use(express.static(__dirname + '/public'));
 
 //Utilisation de body parser pour convertir la réponse des requêtes
 app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.json());
 
 //Paramétrage de la session utilisateur
 app.use(cookieSession({

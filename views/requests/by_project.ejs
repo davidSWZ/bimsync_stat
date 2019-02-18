@@ -1,0 +1,24 @@
+<% include ../partials/header %>
+
+<form class="container" action="/projects/by_project" method="POST">
+    <div class="form-group choose_form">
+      <label for="projects">Choose a project</label>
+      <select class="form-control" id="projects" name="project_id">
+        <option value="" disabled selected>Select a project...</option>
+        <% projects.forEach(function(project){ %>
+          <option value="<%= project.id %>"><%= project.name %></option>
+        <% }); %>
+      </select>
+      <input type="submit" class="btn btn-info" value="Show me the dashboard">
+    </div>
+
+</form>
+
+<% if (usersNb) { %>
+  <div class="jumbotron">
+    Users: <%= usersNb %>
+  </div>
+<% } %>
+
+
+<% include ../partials/footer %>

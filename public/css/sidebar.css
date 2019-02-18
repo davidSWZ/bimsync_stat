@@ -133,7 +133,7 @@ footer button{
   display: inline;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 780px) {
     #sidebar {
         margin-left: -50px;
         min-width: 50px !important;
@@ -145,7 +145,7 @@ footer button{
         margin-left: 0;
     }
 
-    .media, .dropdown-toggle::after{
+    .media, .dropdown-toggle::after, .user_name{
         display: none !important;
     }
 

@@ -68,4 +68,82 @@ router.get("/", middleware.isLoggedIn, function (req, res){
   });
 });
 
+//==============================================================================
+router.get("/by_project", middleware.isLoggedIn, function(req, res){
+  var oauth = "Bearer " + req.user.access_token;
+  var options = {
+    url:"https://api.bimsync.com/v2/projects",
+    headers:{
+      Authorization: oauth
+    }
+  };
+  request.get(options, function(err, response, body){
+    if(!err){
+      var projects = JSON.parse(body);
+      res.render("requests/by_project", {projects:projects, usersNb:null});
+    } else {
+      console.log(err);
+      res.redirect("/")
+    }
+  })
+});
+
+router.post("/by_project", middleware.isLoggedIn, function(req, res){
+  // console.log(req.body.project_id);
+  function getProjects(){
+    var oauth = "Bearer " + req.user.access_token;
+    var options = {
+      url:"https://api.bimsync.com/v2/projects",
+      headers:{
+        Authorization: oauth
+      }
+    };
+    return new Promise (function(resolve, reject){
+      request.get(options, function(err, response, body){
+        if(!err){
+            var projects = JSON.parse(body);
+            resolve(projects);
+        } else {
+          console.log(err);
+          res.redirect("/")
+        }
+      })
+    })
+  }
+
+  function getUsers(){
+      var oauth = "Bearer " + req.user.access_token;
+      var options = {
+        url:"https://api.bimsync.com/v2/projects/"+ req.body.project_id +"/members",
+        headers:{
+          Authorization: oauth
+        }
+      };
+      return new Promise (function(resolve, reject){
+        request.get(options, function(err, response, body){
+          if(!err){
+              var users = JSON.parse(body);
+              resolve(users.length);
+          } else {
+            console.log(err);
+            res.redirect("/")
+          }
+        })
+      })
+  }
+
+  function main(){
+    var getUsersPromise = getUsers();
+    var getProjectsPromise = getProjects();
+    getProjectsPromise.then(function(dataProjects){
+      getUsersPromise.then(function(dataUsers){
+        res.render("requests/by_project", {projects:dataProjects, usersNb:dataUsers});
+      })
+    })
+  }
+
+  main();
+});
+
+
 module.exports = router;

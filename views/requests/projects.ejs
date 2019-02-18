@@ -1,9 +1,10 @@
 <% include ../partials/header %>
 
 <!-- CANVAS PREMIER BARGRAPH AVEC LES REVISIONS -->
-<div id="chart1" class="myChart jumbotron">
-  <canvas id="myChart" width="500px" height="2000px"></canvas>
-</div>
+
+  <div id="chart1" class="myChart">
+    <canvas id="myChart"></canvas>
+  </div>
 
 <!-- CANVAS SECOND BARGRAPH AVEC LES TOPICS -->
 <div id="chart2" class="myChart jumbotron">
@@ -12,66 +13,102 @@
 
 <!-- SCRIPT POUR LE PREMIER BARGRAPH AVEC LES REVISIONS -->
 <script type="text/javascript">
+
   var labelsStringified = <%- JSON.stringify(labels) %>;
   var backgroundColorsStringified = <%- JSON.stringify(backgroundColors) %>;
   var borderColorsStringified = <%- JSON.stringify(borderColors) %>;
 
   var ctx = document.getElementById("myChart").getContext('2d');
+  var data = {
+      labels: labelsStringified,
+      datasets: [{
+          label: 'Revisions by project',
+          data: [<%=datas%>],
+          backgroundColor: backgroundColorsStringified,
+          borderColor: borderColorsStringified,
+          borderWidth: 1
+      }]
+  }
+  var options = {
+      responsive:true,
+      scales: {
+          yAxes: [{
+              barThickness:20,
+              ticks: {
+                  beginAtZero:true
+              }
+          }],
+          xAxes:[{
+            gridLines:{
+              display:false
+            }
+          }]
+      }
+  }
+
+  // Calcul de la hauteur du bargraph
+  var height = (data.labels.length +5) * 30;
+
+  //définit la hauteur et la largeur du bargraph en parametrant les attributs du canvas
+  document.getElementById('myChart').setAttribute("width",500)
+  document.getElementById('myChart').setAttribute("height",(height))
+
   var myChart = new Chart(ctx, {
     type: 'horizontalBar',
-    data: {
-        labels: labelsStringified,
-        datasets: [{
-            label: 'Revisions by project',
-            data: [<%=datas%>],
-            backgroundColor: backgroundColorsStringified,
-            borderColor: borderColorsStringified,
-            borderWidth: 1
-        }]
-    },
-    options: {
-        responsive:true,
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                }
-            }]
-        }
-    }
+    data:data,
+    options:options
   });
+
 </script>
 
 <!-- SCRIPT POUR LE SECOND BARGRAPH AVEC LES TOPICS -->
 <script type="text/javascript">
+
   var labelsStringified = <%- JSON.stringify(labels) %>;
   var backgroundColorsStringified = <%- JSON.stringify(backgroundColors) %>;
   var borderColorsStringified = <%- JSON.stringify(borderColors) %>;
 
   var ctx = document.getElementById("chartTopics").getContext('2d');
+  var data = {
+      labels: labelsStringified,
+      datasets: [{
+          label: 'Revisions by project',
+          data: [<%=datas%>],
+          backgroundColor: backgroundColorsStringified,
+          borderColor: borderColorsStringified,
+          borderWidth: 1
+      }]
+  }
+  var options = {
+      responsive:true,
+      scales: {
+          yAxes: [{
+              barThickness:20,
+              ticks: {
+                  beginAtZero:true
+              }
+          }],
+          xAxes:[{
+            gridLines:{
+              display:false
+            }
+          }]
+      }
+  }
+
+  // Calcul de la hauteur du bargraph
+  var height = (data.labels.length +5) * 30;
+
+  //définit la hauteur et la largeur du bargraph en parametrant les attributs du canvas
+  document.getElementById('chartTopics').setAttribute("width",500)
+  document.getElementById('chartTopics').setAttribute("height",(height))
+
   var myChart = new Chart(ctx, {
     type: 'horizontalBar',
-    data: {
-        labels: labelsStringified,
-        datasets: [{
-            label: 'Topics by project',
-            data: [<%=datas%>],
-            backgroundColor: backgroundColorsStringified,
-            borderColor: borderColorsStringified,
-            borderWidth: 1
-        }]
-    },
-    options: {
-        responsive:true,
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                }
-            }]
-        }
-    }
+    data:data,
+    options:options
   });
+
 </script>
 
 

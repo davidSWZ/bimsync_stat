@@ -31,22 +31,21 @@
   font-size: 25px;
 }
 
-.myChart{
-  width: 47%;
-  padding: 10px;
-  margin: 5px;
-  border: 1px solid #e0e1e4;
+.choose_form{
+  padding-bottom: 10px;
+  border-bottom: solid 1px #c5c0c0;
 }
 
-#chart1{
-  float: left;
+.choose_form select{
+  margin: 10px auto;
+  width: 80%;
 }
 
-#chart2{
-  float: right;
+form{
+text-align: center;
 }
 
-@media (max-width: 500px) {
-    .myChart {
-        float: none !important;
-        width: 95%;
+form label{
+ margin:0 auto;
+ display: inline-block;
+}
