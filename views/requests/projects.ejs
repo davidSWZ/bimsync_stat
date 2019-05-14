@@ -1,29 +1,67 @@
 <% include ../partials/header %>
+<!--SPINNER-->
+<div class="chargement">
+  <div class="d-flex justify-content-center">
+    <div class="spinner-grow spinner-grow-sm text-secondary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+    <div class="spinner-grow spinner-grow-sm text-secondary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+    <div class="spinner-grow spinner-grow-sm text-secondary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+    <p> Please wait, the loading may take a few seconds </p>
+    <div class="spinner-grow spinner-grow-sm text-secondary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+    <div class="spinner-grow spinner-grow-sm text-secondary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+    <div class="spinner-grow spinner-grow-sm text-secondary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+</div>
 
-<!-- CANVAS PREMIER BARGRAPH AVEC LES REVISIONS -->
+<div class="graphContainer" >
+<!-- CANVAS SECOND BARGRAPH AVEC LES TOPICS -->
+  <div class="graphBlock">
+        <h1 class="title"> Number of model revisions by project <h1>
+    <div id="chart1" class="myChart">
+      <canvas id="myChart"></canvas>
+    </div>
+  </div
 
-  <div id="chart1" class="myChart">
-    <canvas id="myChart"></canvas>
+<!-- CANVAS SECOND BARGRAPH AVEC LES REVISIONS -->
+  <div class="graphBlock">
+    <h1 class="title"> Number of topics by project <h1>
+    <div id="chart2" class="myChart jumbotron">
+      <canvas id="chartTopics" width="500px" height="2000px"></canvas>
+    </div>
   </div>
 
-<!-- CANVAS SECOND BARGRAPH AVEC LES TOPICS -->
-<div id="chart2" class="myChart jumbotron">
-  <canvas id="chartTopics" width="500px" height="2000px"></canvas>
 </div>
+
+
+
+
+
+
 
 <!-- SCRIPT POUR LE PREMIER BARGRAPH AVEC LES REVISIONS -->
 <script type="text/javascript">
 
-  var labelsStringified = <%- JSON.stringify(labels) %>;
+  var labelsProjectsStringified = <%- JSON.stringify(labelsProjects) %>;
   var backgroundColorsStringified = <%- JSON.stringify(backgroundColors) %>;
   var borderColorsStringified = <%- JSON.stringify(borderColors) %>;
 
   var ctx = document.getElementById("myChart").getContext('2d');
   var data = {
-      labels: labelsStringified,
+      labels: labelsProjectsStringified,
       datasets: [{
           label: 'Revisions by project',
-          data: [<%=datas%>],
+          data: [<%=datasProjects%>],
           backgroundColor: backgroundColorsStringified,
           borderColor: borderColorsStringified,
           borderWidth: 1
@@ -64,16 +102,16 @@
 <!-- SCRIPT POUR LE SECOND BARGRAPH AVEC LES TOPICS -->
 <script type="text/javascript">
 
-  var labelsStringified = <%- JSON.stringify(labels) %>;
+  var labelsTopicsStringified = <%- JSON.stringify(labelsTopics) %>;
   var backgroundColorsStringified = <%- JSON.stringify(backgroundColors) %>;
   var borderColorsStringified = <%- JSON.stringify(borderColors) %>;
 
   var ctx = document.getElementById("chartTopics").getContext('2d');
   var data = {
-      labels: labelsStringified,
+      labels: labelsTopicsStringified,
       datasets: [{
-          label: 'Revisions by project',
-          data: [<%=datas%>],
+          label: 'Topics by project',
+          data: [<%=datasTopics%>],
           backgroundColor: backgroundColorsStringified,
           borderColor: borderColorsStringified,
           borderWidth: 1

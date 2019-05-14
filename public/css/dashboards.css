@@ -1,5 +1,5 @@
 .myChart{
-  width: 47%;
+  width: 97%;
   height: 500px;
   padding: 10px;
   margin: 5px;
@@ -18,5 +18,4 @@
 @media (max-width: 500px) {
     .myChart {
         float: none !important;
-        width: 95%;
 }

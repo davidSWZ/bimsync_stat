@@ -1,24 +1,101 @@
 <% include ../partials/header %>
-
-<form class="container" action="/projects/by_project" method="POST">
-    <div class="form-group choose_form">
-      <label for="projects">Choose a project</label>
-      <select class="form-control" id="projects" name="project_id">
-        <option value="" disabled selected>Select a project...</option>
-        <% projects.forEach(function(project){ %>
-          <option value="<%= project.id %>"><%= project.name %></option>
-        <% }); %>
-      </select>
-      <input type="submit" class="btn btn-info" value="Show me the dashboard">
+<!--SPINNER-->
+  <div class="chargement">
+    <div class="d-flex justify-content-center">
+      <div class="spinner-grow spinner-grow-sm text-secondary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <div class="spinner-grow spinner-grow-sm text-secondary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <div class="spinner-grow spinner-grow-sm text-secondary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <p> Please wait, the loading may take a few seconds </p>
+      <div class="spinner-grow spinner-grow-sm text-secondary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <div class="spinner-grow spinner-grow-sm text-secondary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <div class="spinner-grow spinner-grow-sm text-secondary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
     </div>
+  </div>
+  
+<!--FORMULAIRE DE SELECTION DU PROJET BIMSYNC-->
+  <form class="container" action="/projects/by_project" method="POST">
+      <div class="form-group choose_form">
+        <label for="projects">Choose a project</label>
+        <select class="form-control" id="projects" name="project_id">
+          <option value="" disabled selected>Select a project...</option>
+          <% projects.forEach(function(project){ %>
+            <option value="<%= project.id %>"><%= project.name %></option>
+          <% }); %>
+        </select>
+        <input type="submit" class="btn btn-info" value="Show me the dashboard">
+      </div>
+  </form>
 
-</form>
+<!-- ==================================================================== -->
+
+<!-- Si le champs userNB n'est pas vide, c'est à dire si une requête à été faite pour un projet précis-->
+<!-- Afficher le tableau de bord -->
 
 <% if (usersNb) { %>
-  <div class="jumbotron">
-    Users: <%= usersNb %>
-  </div>
-<% } %>
+  <div class="container"> <!-- Partie contenant les Grand chiffre en tête de tableau de bord -->
 
+    <!-- Nombre de membre du projet -->
+    <div class="d-sm-block d-md-flex justify-content-around">
+      <div id="jumboUsers" class="jumbotron sm-col-12 md-col-3 m-1">
+         <span class="number"><%= usersNb %></span> <br>Users
+      </div>
+
+      <!-- Nombre de sujets (A FAIRE) -->
+      <div id="jumboTopics" class="jumbotron sm-col-12 md-col-3 m-1">
+         <span class="number"><%= usersNb %></span> <br>Topics
+      </div>
+
+      <!-- Date de la dernière mise à jour du projet BIMSYNC -->
+      <div id="jumboUpdate" class="jumbotron sm-col-12 md-col-4 m-1">
+         <span class="number"><%= projectLastUpdate %></span> <br>Last update
+      </div>
+    </div>
+
+    <!-- Canvas pour afficher le doughnut des révisions par modèles -->
+    <div class="row d-flex justify-content-around">
+      <div id="chart1" class="myChart "  >
+        <canvas id="myChart"></canvas>
+      </div>
+    </div>
+
+  </div>
+
+  <script type="text/javascript"> // script pour afficher le graphique donnant le nombre de révision par modèle
+
+    // On récupère les données transmise par le backend et on les retransforme en string pour ètre compris dans le script
+    var labelmodelSTR = <%- JSON.stringify(labelmodel) %>;
+    var backgroundColorsmodelSTR = <%- JSON.stringify(backgroundColorsmodel) %>;
+    var borderColorsmodelSTR = <%- JSON.stringify(borderColorsmodel) %>;
+
+    // Script Chart.js
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var chart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+          labels: labelmodelSTR,
+          datasets: [{
+              label: "Types of revisions",
+              backgroundColor: backgroundColorsmodelSTR,
+              borderColor: borderColorsmodelSTR,
+              data: [<%=datamodel%>],
+          }]
+      },
+      options: {}
+    });
+
+  </script>
+<% } %>
 
 <% include ../partials/footer %>

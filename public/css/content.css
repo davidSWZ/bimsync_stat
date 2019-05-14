@@ -49,3 +49,58 @@ form label{
  margin:0 auto;
  display: inline-block;
 }
+
+.jumbotron{
+  padding:10px 30px;
+  text-align: center;
+}
+
+#jumboUsers{
+  background-color: #e3cd56;
+}
+
+#jumboTopics{
+  background-color: #ed5d72;
+}
+
+#jumboUpdate{
+  background-color: #0ccf7c;
+}
+
+.number{
+  font-size: 50px;
+  font-weight: bold;
+  padding: 0;
+  margin:0;
+}
+
+.chartTitle{
+  display: flex;
+  justify-content: space-around;
+}
+
+.title{
+  font-size: 1.5em;
+  margin: 10px;
+  text-align: center;
+}
+
+.graphContainer{
+  display:flex;
+  justify-content:space-around;
+}
+.graphBlock{
+  display:flex;
+  flex-direction: column;
+  text-align: center;
+  width: 47%;
+
+}
+@media screen and (max-width: 600px) {
+  .graphContainer{
+    display:block;
+  }
+  .graphBlock{
+    width: 95%;
+  }
+}
