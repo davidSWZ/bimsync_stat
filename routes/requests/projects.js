@@ -276,6 +276,12 @@ router.post("/by_project", middleware.isLoggedIn, function(req, res){
         request.get(options, function(err, response, body){
           if(!err){
               var users = JSON.parse(body);
+              for( var i = 0; i < users.length; i++){
+                if ( users[i].user.username === null) {
+                  users.splice(i, 1);
+                  i--;
+                }
+              }
               resolve(users.length);
           } else {
             console.log(err);
@@ -336,7 +342,7 @@ router.post("/by_project", middleware.isLoggedIn, function(req, res){
               }
             }
             if(nvx){
-              console.log(revision.model.name)
+              // console.log(revision.model.name)
               datamodel.push(1),
               labelmodel.push(revision.model.name);
               var color = getRandomColor();
