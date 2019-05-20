@@ -197,6 +197,7 @@ router.get("/", middleware.isLoggedIn, function (req, res){
 main();
 });
 
+
 //=======================================================================
 //Début du script pour faire la page du tableau de bord par projet (2eme onglet de l'application)
 //=======================================================================
