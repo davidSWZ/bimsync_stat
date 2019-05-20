@@ -23,7 +23,7 @@
       </div>
     </div>
   </div>
-  
+
 <!--FORMULAIRE DE SELECTION DU PROJET BIMSYNC-->
   <form class="container" action="/projects/by_project" method="POST">
       <div class="form-group choose_form">
@@ -50,6 +50,13 @@
     <div class="d-sm-block d-md-flex justify-content-around">
       <div id="jumboUsers" class="jumbotron sm-col-12 md-col-3 m-1">
          <span class="number"><%= usersNb %></span> <br>Users
+         <!--EXPORT LISTE UTILISATEURS EN EXCEL -->
+         <% var usersSTR =  JSON.stringify(usersList) %>
+         <button type="button" class="btn btn-outline-dark p-1" name="excelExport"
+            style="font-size:0.6em"
+            onclick="exportUsers(<%=usersSTR%>, headers, fileTitle)">
+            <i class="fas fa-download"></i> Export list
+         </button>
       </div>
 
       <!-- Nombre de sujets (A FAIRE) -->
@@ -96,6 +103,7 @@
     });
 
   </script>
+
 <% } %>
 
 <% include ../partials/footer %>

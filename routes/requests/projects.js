@@ -282,7 +282,7 @@ router.post("/by_project", middleware.isLoggedIn, function(req, res){
                   i--;
                 }
               }
-              resolve(users.length);
+              resolve(users);
           } else {
             console.log(err);
             res.redirect("/")
@@ -371,10 +371,10 @@ router.post("/by_project", middleware.isLoggedIn, function(req, res){
       getModelsbyTypePromise.then(function(modelsByType){
         getUsersPromise.then(function(dataUsers){
           getProjectLastUpdatePromise.then(function(projectLastUpdate){
-            console.log(projectLastUpdate);
             res.render("requests/by_project", {
               projects:dataProjects,
-              usersNb:dataUsers,
+              usersNb:dataUsers.length,
+              usersList: dataUsers,
               projectLastUpdate:projectLastUpdate,
               datamodel:datamodel,
               labelmodel:labelmodel ,
