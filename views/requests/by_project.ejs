@@ -72,7 +72,7 @@
 
     <!-- Canvas pour afficher le doughnut des révisions par modèles -->
     <div class="row d-flex justify-content-around">
-      <div id="chart1" class="myChart "  >
+      <div id="chart1" class="myChart">
         <canvas id="myChart"></canvas>
       </div>
     </div>
@@ -85,6 +85,15 @@
     var labelmodelSTR = <%- JSON.stringify(labelmodel) %>;
     var backgroundColorsmodelSTR = <%- JSON.stringify(backgroundColorsmodel) %>;
     var borderColorsmodelSTR = <%- JSON.stringify(borderColorsmodel) %>;
+
+    var testLegend = true;
+    if (<%=datamodel.length%> > 12){
+      testLegend = false;
+    }
+    var width = window.innerWidth;
+    if (width < 800){
+      testLegend = false;
+    }
 
     // Script Chart.js
     var ctx = document.getElementById('myChart').getContext('2d');
@@ -99,7 +108,16 @@
               data: [<%=datamodel%>],
           }]
       },
-      options: {}
+      options: {
+        title: {
+            display: true,
+            text: 'Number of revisions by type of models'
+        },
+        legend: {
+          display: testLegend,
+          position: 'bottom'
+        }
+      }
     });
 
   </script>

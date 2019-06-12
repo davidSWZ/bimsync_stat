@@ -331,19 +331,15 @@ router.post("/by_project", middleware.isLoggedIn, function(req, res){
           var revisions = JSON.parse(body);
           revisions.forEach(function(revision){
             var nvx = true;
-            if(labelmodel.length !== null){
-              for (i=0; i<=labelmodel.length ;i++){
-                if (revision.model.name = labelmodel[i]){
+            if(labelmodel.length !== 0){
+              for (i = 0; i < labelmodel.length ; i++){
+                if (revision.model.name === labelmodel[i]){
                   datamodel[i] += 1;
                   nvx = false;
-                  break;
-                } else {
-                  i++;
                 }
               }
             }
             if(nvx){
-              // console.log(revision.model.name)
               datamodel.push(1),
               labelmodel.push(revision.model.name);
               var color = getRandomColor();
