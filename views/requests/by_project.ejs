@@ -46,6 +46,10 @@
 <% if (usersNb) { %>
   <div class="container"> <!-- Partie contenant les Grand chiffre en tête de tableau de bord -->
 
+    <div class="projectName">
+      <h5><%= projectName %></h5>
+    </div>
+
     <!-- Nombre de membre du projet -->
     <div class="d-sm-block d-md-flex justify-content-around">
       <div id="jumboUsers" class="jumbotron sm-col-12 md-col-3 m-1">
@@ -61,7 +65,7 @@
 
       <!-- Nombre de sujets (A FAIRE) -->
       <div id="jumboTopics" class="jumbotron sm-col-12 md-col-3 m-1">
-         <span class="number"><%= usersNb %></span> <br>Topics
+         <span class="number"><%= topics.length %></span> <br>Topics
       </div>
 
       <!-- Date de la dernière mise à jour du projet BIMSYNC -->

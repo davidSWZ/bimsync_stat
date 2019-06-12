@@ -239,6 +239,9 @@ router.post("/by_project", middleware.isLoggedIn, function(req, res){
   var datamodel = [];
   var backgroundColorsmodel = [];
   var borderColorsmodel = [];
+  var topicsList = [];
+  var projectName = null;
+
 
 //Récupère la liste des projets de l'utilisateur
 //Utile pour réafficher la liste des projets dans
@@ -292,7 +295,7 @@ router.post("/by_project", middleware.isLoggedIn, function(req, res){
       })
   }
 
-//Récupère la date de la dernière mise à jour du projet choisi
+//Récupère la date de la dernière mise à jour du projet choisi et le nom du projet
   function getProjectLastUpdate(){
     var oauth = "Bearer " + req.user.access_token;
     var options = {
@@ -305,6 +308,7 @@ router.post("/by_project", middleware.isLoggedIn, function(req, res){
       request.get(options, function(err, response, body){
         if(!err){
           var project = JSON.parse(body);
+          projectName = project.name;
           var updateDate = new Date(project.updatedAt);
           var date = updateDate.getDate() + '/' + (updateDate.getMonth() + 1) + '/' +  updateDate.getFullYear();
           resolve(date);
@@ -357,6 +361,67 @@ router.post("/by_project", middleware.isLoggedIn, function(req, res){
     })
   }
 
+
+  // Fonction pour récupérer les listes de sujets dans le projet
+    function getIssueBoards(){
+      var oauth = "Bearer " + req.user.access_token;
+      var issueBoardOptions = {
+           url:"https://bcf.bimsync.com/bcf/beta/projects?bimsync_project_id="+ req.body.project_id,
+           headers:{
+             Authorization: oauth
+           }
+         };
+        // Return new promise
+        return new Promise(function(resolve, reject) {
+          request.get(issueBoardOptions, function(err, resp, issueBoardBody) {
+            if (err) {
+              reject(err);
+            } else {
+              var issueBoards = JSON.parse(issueBoardBody);
+              resolve(issueBoards);
+            }
+          });
+        });
+      }
+
+
+  // Fonction pour récupérer les sujets d'une liste de sujet
+    var fnGetTopics = function getTopics(j){
+      var oauth = "Bearer " + req.user.access_token;
+      var topicsOptions = {
+           url:"https://bcf.bimsync.com/bcf/beta/projects/"+ j.project_id +"/topics",
+           headers:{
+             Authorization: oauth
+           }
+      };
+        // Return new promise
+      return new Promise(function(resolve, reject) {
+        request.get(topicsOptions, function(err, resp, topicsBody) {
+          if (err) {
+            reject(err);
+          } else {
+            var topics = JSON.parse(topicsBody);
+            topics.forEach(function(topic){
+              topicsList.push(topic)
+            })
+            resolve();
+          }
+        });
+      });
+    }
+
+   // Fonction qui joue la fonction du dessus sur toutes les listes de sujets du projet
+    function getAllTopics (){
+      return new Promise (function(resolve, reject){
+        getIssueBoards().then(function(issueBoards){
+          var getAllTopics = issueBoards.map(fnGetTopics);
+          var resultArray = Promise.all(getAllTopics);
+          resultArray.then(function(){
+            resolve();
+          })
+        })
+      })
+    }
 //Fonction principale jouant une par une
 // les fonctions au dessus pour récupéré toute la donnée nécessaire pour
   function main(){
@@ -364,20 +429,25 @@ router.post("/by_project", middleware.isLoggedIn, function(req, res){
     var getProjectsPromise = getProjects();
     var getModelsbyTypePromise = getModelsbyType();
     var getProjectLastUpdatePromise = getProjectLastUpdate();
+    var getAllTopicsPromise = getAllTopics();
     getProjectsPromise.then(function(dataProjects){
       getModelsbyTypePromise.then(function(modelsByType){
         getUsersPromise.then(function(dataUsers){
-          getProjectLastUpdatePromise.then(function(projectLastUpdate){
-            res.render("requests/by_project", {
-              projects:dataProjects,
-              usersNb:dataUsers.length,
-              usersList: dataUsers,
-              projectLastUpdate:projectLastUpdate,
-              datamodel:datamodel,
-              labelmodel:labelmodel ,
-              backgroundColorsmodel:backgroundColorsmodel ,
-              borderColorsmodel:borderColorsmodel ,
-            });
+          getAllTopicsPromise.then(function(){
+            getProjectLastUpdatePromise.then(function(projectLastUpdate){
+              res.render("requests/by_project", {
+                projects:dataProjects,
+                usersNb:dataUsers.length,
+                usersList: dataUsers,
+                projectLastUpdate:projectLastUpdate,
+                datamodel:datamodel,
+                labelmodel:labelmodel ,
+                backgroundColorsmodel:backgroundColorsmodel ,
+                borderColorsmodel:borderColorsmodel ,
+                projectName: projectName,
+                topics: topicsList
+              });
+            })
           })
         })
       })
