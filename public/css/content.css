@@ -60,7 +60,10 @@ form label{
 }
 
 #jumboTopics{
-  background-color: #ed5d72;
+  background-color: #ed5d72;}
+
+#jumboModels{
+  background-color: #5d9ced;
 }
 
 #jumboUpdate{
