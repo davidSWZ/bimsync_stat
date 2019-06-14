@@ -435,6 +435,7 @@ router.post("/by_project", middleware.isLoggedIn, function(req, res){
         getUsersPromise.then(function(dataUsers){
           getAllTopicsPromise.then(function(){
             getProjectLastUpdatePromise.then(function(projectLastUpdate){
+              console.log(topicsList)
               res.render("requests/by_project", {
                 projects:dataProjects,
                 usersNb:dataUsers.length,

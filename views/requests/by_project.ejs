@@ -77,7 +77,14 @@
     <!-- Canvas pour afficher le doughnut des révisions par modèles -->
     <div class="row d-flex justify-content-around">
       <div id="chart1" class="myChart">
-        <canvas id="myChart"></canvas>
+        <canvas id="myChart1"></canvas>
+      </div>
+    </div>
+
+    <!-- Canvas pour afficher le bargraph des sujets par mois -->
+    <div class="row d-flex justify-content-around">
+      <div id="chart2" class="myChart">
+        <canvas id="myChart2"></canvas>
       </div>
     </div>
 
@@ -100,7 +107,7 @@
     }
 
     // Script Chart.js
-    var ctx = document.getElementById('myChart').getContext('2d');
+    var ctx = document.getElementById('myChart1').getContext('2d');
     var chart = new Chart(ctx, {
       type: 'doughnut',
       data: {
@@ -115,11 +122,101 @@
       options: {
         title: {
             display: true,
-            text: 'Number of revisions by type of models'
+            text: 'Number of revisions by type of models',
         },
         legend: {
           display: testLegend,
           position: 'bottom'
+        }
+      }
+    });
+
+  </script>
+
+  <script type="text/javascript"> // script pour afficher le graphique donnant le nombre de sujets par jumboTopics
+    //stringify les topics
+    var topicsSTR = <%- JSON.stringify(topics) %>;
+    //Prépare les variables nécessaire pour le script organizeData
+    var months = [];
+    var topicsDate = []
+    var topicsNb = [];
+    var topicsCumulated = [];
+    // On organise les données des topics pour les restituer au graph Chart.js
+    function organizeData (){
+      topicsSTR.forEach(function(topic){
+         var date = new Date(topic.creation_date);
+         months.push(date);
+      });
+      orderedDates = months.sort(function(a,b){
+       return Date.parse(a) > Date.parse(b);
+       })
+      orderedDates.forEach(function(date){
+         var realDate = (date.toLocaleString('en-us', { month: 'long' })) + ' ' +  date.getFullYear();
+         var nvx = true;
+         if(topicsDate.length !== 0){
+           for (i = 0; i < topicsDate.length ; i++){
+             if (realDate === topicsDate[i]){
+               topicsNb[i] += 1;
+               nvx = false;
+             }
+           }
+         }
+         if(nvx){
+           topicsNb.push(1),
+           topicsDate.push(realDate);
+           // backgroundColorsmodel.push('#15191f');
+           // borderColorsmodel.push('#15191f');
+         }
+        topicsNb.reduce(function(a,b,i) { return topicsCumulated[i] = a+b; },0);
+      })
+    }
+
+    //On joue le script organizeData
+    organizeData()
+
+    // Script Chart.js
+    var ctx = document.getElementById('myChart2').getContext('2d');
+    var chart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+          labels: topicsDate,
+          datasets: [{
+              label: "by month",
+              data: topicsNb,
+              backgroundColor: '#ed5d72'
+          },
+          {
+              label: "cumulated",
+              data: topicsCumulated,
+              type: 'line',
+              backgroundColor: 'rgba(0, 0, 0, 0)',
+              borderColor: '#f2ae58'
+          }]
+      },
+      options: {
+        title: {
+            display: true,
+            text: 'Topics by month'
+        },
+        legend: {
+          display: true,
+          position: 'bottom'
+        },
+        scales: {
+            yAxes: [{
+                barThickness:20,
+                ticks: {
+                    beginAtZero:true
+                }
+            }],
+            xAxes:[{
+              gridLines:{
+                display:false
+              },
+              ticks: {
+                autoSkip: false
+              }
+            }]
         }
       }
     });
