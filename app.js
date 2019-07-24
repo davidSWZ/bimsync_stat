@@ -55,16 +55,20 @@ var url = process.env.DATABASEURL;
 mongoose.connect(url ,{ useNewUrlParser: true });
 
 //===========================IMPORTE LES ROUTES=================================
-const indexRoute    = require("./routes/index"),
-      oauthRoute    = require("./routes/oauths/oauths"),
-      logoutRoute   = require("./routes/oauths/logout"),
-      projectsRoute = require("./routes/requests/projects");
+const indexRoute            = require("./routes/index"),
+      oauthRoute            = require("./routes/oauths/oauths"),
+      logoutRoute           = require("./routes/oauths/logout"),
+      projectsRoute         = require("./routes/requests/projects");
+      usersRoute            = require("./routes/requests/users");
+      dataByProjectsRoute   = require("./routes/requests/byProject")
 
 //===========================DECLARE LES ROUTES=================================
 app.use("/", indexRoute);
 app.use("/oauth", oauthRoute);
 app.use("/logout", logoutRoute);
 app.use("/projects", projectsRoute);
+app.use("/users", usersRoute);
+app.use("/byproject", dataByProjectsRoute);
 
 //===========================DEFINITION DU PORT ET DE L'IP======================
 app.listen(process.env.PORT, process.env.IP, function(){

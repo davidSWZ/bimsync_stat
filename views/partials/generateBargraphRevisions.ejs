@@ -1,0 +1,51 @@
+<script type="text/javascript">
+
+  //Transforme en string les variables
+  var labelsProjectsStringified = <%- JSON.stringify(labelsProjects) %>;
+  var backgroundColorsStringified = <%- JSON.stringify(backgroundColors) %>;
+  var borderColorsStringified = <%- JSON.stringify(borderColors) %>;
+
+  //Déclaration des paramêtres pour Chart.js
+  var ctx = document.getElementById("myChart").getContext('2d');
+  var data = {
+      labels: labelsProjectsStringified,
+      datasets: [{
+          label: 'Revisions by project',
+          data: [<%=datasProjects%>],
+          backgroundColor: backgroundColorsStringified,
+          borderColor: borderColorsStringified,
+          borderWidth: 1
+      }]
+  }
+  
+  var options = {
+      responsive:true,
+      scales: {
+          yAxes: [{
+              barThickness:20,
+              ticks: {
+                  beginAtZero:true
+              }
+          }],
+          xAxes:[{
+            gridLines:{
+              display:false
+            }
+          }]
+      }
+  }
+
+  // Calcul de la hauteur du bargraph
+  var height = (data.labels.length +5) * 30;
+
+  //définit la hauteur et la largeur du bargraph en parametrant les attributs du canvas
+  document.getElementById('myChart').setAttribute("width",500)
+  document.getElementById('myChart').setAttribute("height",(height))
+
+  var myChart = new Chart(ctx, {
+    type: 'horizontalBar',
+    data:data,
+    options:options
+  });
+
+</script>

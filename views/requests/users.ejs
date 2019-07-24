@@ -1,0 +1,27 @@
+<% include ../partials/header %>
+
+<!--SPINNER-->
+<% include ../partials/spinner %>
+
+<div class="container">
+
+  <!-- Formulaire pour filtrer le tableau des users -->
+  <div class="form-group choose_form">
+    <input type="text" id="myInput" class="form-control" onkeyup="search()" placeholder="Search for a user...">
+  </div>
+
+  <!-- Table pour le tableau des users -->
+    <div class="mytable">
+      <table id="mytable">
+      </table>
+    </div>
+
+</div>
+
+<!-- script pour compléter le tableau des users -->
+<% include ../partials/createTableUSer %>
+
+<!-- Script pour filtrer les utilisateurs du tableau -->
+<script type="text/javascript" src="/js/searchUser.js"></script>
+
+<% include ../partials/footer %>

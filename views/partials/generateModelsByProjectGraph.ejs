@@ -1,0 +1,43 @@
+<script type="text/javascript">
+
+  // On récupère les données transmise par le backend et on les retransforme en string pour ètre compris dans le script
+  var labelmodelSTR = <%- JSON.stringify(labelmodel) %>;
+  var backgroundColorsmodelSTR = <%- JSON.stringify(backgroundColorsmodel) %>;
+  var borderColorsmodelSTR = <%- JSON.stringify(borderColorsmodel) %>;
+
+  //Si le graph contient trop d'élément, on n'affiche pas la légende pour le pas alourdir la page
+  var testLegend = true;
+  if (<%=datamodel.length%> > 12){
+    testLegend = false;
+  }
+  var width = window.innerWidth;
+  if (width < 800){
+    testLegend = false;
+  }
+
+  // Script Chart.js
+  var ctx = document.getElementById('myChart1').getContext('2d');
+  var chart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        labels: labelmodelSTR,
+        datasets: [{
+            label: "Types of revisions",
+            backgroundColor: backgroundColorsmodelSTR,
+            borderColor: borderColorsmodelSTR,
+            data: [<%=datamodel%>],
+        }]
+    },
+    options: {
+      title: {
+          display: true,
+          text: 'Number of revisions by type of models',
+      },
+      legend: {
+        display: testLegend,
+        position: 'bottom'
+      }
+    }
+  });
+
+</script>

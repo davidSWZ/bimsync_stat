@@ -3,22 +3,28 @@
 
   <head>
     <meta charset="utf-8">
+
     <!-- fontawesome -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
     <!-- Chart.js -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+
     <!-- Font Awesome JS -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/sidebar.css">
     <link rel="stylesheet" href="/css/content.css">
     <link rel="stylesheet" href="/css/home.css">
-    <link rel="stylesheet" href="/css/dashboards.css">
+
     <!-- Icon du header -->
     <link rel="shortcut icon" href="images/Chart.png" type="image/x-icon" />
+
     <!-- Google font -->
     <link href="https://fonts.googleapis.com/css?family=Muli:200,300,400,700" rel="stylesheet">
 
@@ -28,6 +34,7 @@
   <body>
 
     <div class="wrapper">
+
 <!-- SIDEBAR -->
       <nav id="sidebar">
         <i src="images/Chart.png" alt="Logo" height="20px" width="20px"></i> <p id="title-sidebar"><i class="far fa-chart-bar"></i><span class="media"> BIMSYNC ANALYTICS</span></p>
@@ -39,7 +46,10 @@
                         <a class="sous-menu" href="/projects">Global view</a>
                     </li>
                     <li>
-                        <a class="sous-menu" href="/projects/by_project">Projects data</a>
+                        <a class="sous-menu" href="/byproject">Project data</a>
+                    </li>
+                    <li>
+                        <a class="sous-menu" href="/users">Users</a>
                     </li>
                 </ul>
             </li>
@@ -63,15 +73,19 @@
             </li>
 
         </ul>
+
         <footer class="media">
-          <button onclick="window.print()">Print This Page</button>
-          <p id="source">Developed by David SWIATKIEWIEZ</p>
-          <p>View the <a href="https://github.com/davidSWZ/bimsync_stat">source</a> on Github</p>
+          <p>
+            Developed by David SWIATKIEWIEZ <br>
+            View the <a href="https://github.com/davidSWZ/bimsync_stat">source</a> on Github
+          </p>
         </footer>
+
       </nav>
 
 <!-- CONTENU DE LA PAGE -->
       <div id="content">
+
 <!-- NAVBAR DU CONTENU -->
         <nav id="content-navbar" class="navbar navbar-light" id="horizontalNavBar">
           <button type="button" id="sidebarCollapse" class="btn text-white">

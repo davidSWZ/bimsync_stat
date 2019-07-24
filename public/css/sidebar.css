@@ -108,25 +108,15 @@ ul ul a {
 }
 
 footer{
-  display: flex;
+  display: block;
   justify-content: center;
 }
 
-footer p, footer button{
-  position: absolute;
-  display: block;
+footer p{
+  position: relative;
   font-size: 10px;
-  bottom: 0;
   color: #5e6b7d !important;
-  margin: 0;
-}
-
-footer #source{
-  bottom: 20px;
-}
-
-footer button{
-  bottom: 40px;
+  text-align: center;
 }
 
 #sidebar a .media, #title-sidebar .media{

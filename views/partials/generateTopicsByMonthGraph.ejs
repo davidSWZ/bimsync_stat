@@ -1,0 +1,90 @@
+<script type="text/javascript">
+
+  //stringify les topics
+  var topicsSTR = <%- JSON.stringify(topics) %>;
+
+  //Prépare les variables nécessaire pour le script organizeData
+  var months = [];
+  var topicsDate = []
+  var topicsNb = [];
+  var topicsCumulated = [];
+
+  // On organise les données des topics pour les restituer au graph Chart.js
+  function organizeData (){
+    topicsSTR.forEach(function(topic){
+       var date = new Date(topic.creation_date);
+       months.push(date);
+    });
+    orderedDates = months.sort(function(a,b){
+     return Date.parse(a) > Date.parse(b);
+     })
+    orderedDates.forEach(function(date){
+       var realDate = (date.toLocaleString('en-us', { month: 'long' })) + ' ' +  date.getFullYear();
+       var nvx = true;
+       if(topicsDate.length !== 0){
+         for (i = 0; i < topicsDate.length ; i++){
+           if (realDate === topicsDate[i]){
+             topicsNb[i] += 1;
+             nvx = false;
+           }
+         }
+       }
+       if(nvx){
+         topicsNb.push(1),
+         topicsDate.push(realDate);
+       }
+      topicsNb.reduce(function(a,b,i) { return topicsCumulated[i] = a+b; },0);
+    })
+  }
+
+  //On joue le script organizeData
+  organizeData()
+
+  // Script Chart.js
+  var ctx = document.getElementById('myChart2').getContext('2d');
+  var chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: topicsDate,
+        datasets: [{
+            label: "by month",
+            data: topicsNb,
+            backgroundColor: '#ed5d72'
+        },
+        {
+            label: "cumulated",
+            data: topicsCumulated,
+            type: 'line',
+            backgroundColor: 'rgba(0, 0, 0, 0)',
+            borderColor: '#f2ae58'
+        }]
+    },
+    options: {
+      title: {
+          display: true,
+          text: 'Topics by month'
+      },
+      legend: {
+        display: true,
+        position: 'bottom'
+      },
+      scales: {
+          yAxes: [{
+              barThickness:20,
+              ticks: {
+                  beginAtZero:true
+              }
+          }],
+          xAxes:[{
+            gridLines:{
+              display:false
+            },
+            ticks: {
+              autoSkip: false
+            }
+          }]
+      }
+    }
+  });
+
+</script>

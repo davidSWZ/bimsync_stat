@@ -1,0 +1,110 @@
+<!-- script pour compléter le tableau des users -->
+<script type="text/javascript">
+  //Déclaration des variables
+  var labelsProjectsStringified = <%- JSON.stringify(labelsProjects) %>;
+  var users = <%- JSON.stringify(allUsers) %>;
+  var globalList = [];
+
+  //Génère la première ligne du tableau
+  function generateTHead(table){
+    let tHead = table.createTHead();
+    let row = tHead.insertRow();
+
+    //première cellule
+    let th = document.createElement("th");
+    let text = document.createTextNode("Members");
+    th.appendChild(text);
+    row.appendChild(th);
+
+    //Deuxième cellule
+    let thMail = document.createElement("th");
+    let textMail = document.createTextNode("Email");
+    thMail.appendChild(textMail);
+    row.appendChild(thMail);
+    for(let project of labelsProjectsStringified){
+      let th = document.createElement("th");
+      th.className += "th-project";
+      let text = document.createTextNode(project);
+      th.appendChild(text);
+      row.appendChild(th);
+    }
+  };
+
+  //Génère le reste du tableau
+  function generateTable(table, data){
+    for (j = 0; j < users.length; j++){
+      for(var i = 0; i < users[j].length; i++){
+        if(users[j][i].user.username !== null){
+          if(checkIfNew(users[j][i].user.name, j, i)){
+            //Créer la ligne
+            let row = table.insertRow();
+
+            //Créer la première cellule de la ligne et y met le nom du user
+            let cellName = row.insertCell();
+            let text = document.createTextNode(users[j][i].user.name);
+            cellName.appendChild(text);
+
+            //Créer la  cellule Email de la ligne et y met le nom du mail
+            let cellEmail = row.insertCell();
+            let textEmail = document.createTextNode(users[j][i].user.username);
+            cellEmail.appendChild(textEmail);
+
+            //Ajoute les autres cellule de la ligne
+            for ( e = 0 ; e < labelsProjectsStringified.length ; e++){
+              let cell = row.insertCell();
+              if(e == j){
+                let text = document.createTextNode("x");
+                cell.appendChild(text);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+
+  function checkIfNew(data, j, i){
+    var nvx = true;
+    var cell;
+    for (v = 0; v <= j; v++){
+
+      //Vérifie si le user existe déja dans le tableau
+      if( v < j){
+        for(var w = 0; w < users[v].length; w++){
+          if (data == users[v][w].user.name){
+            nvx = false;
+            cell = j+2;
+          }
+        }
+      } else {
+        for(var w = 0; w < i; w++){
+          if (data == users[v][w].user.name){
+            nvx = false;
+          }
+        }
+      }
+    }
+    //Si oui, on met une coche sur la ligne de l'utilisateur en face du projet en cours de controle
+    if (nvx == false) {
+        let text = document.createTextNode("x");
+        var x = document.getElementById("mytable");
+
+        var row = globalList.indexOf(data) + 1;
+
+        x.rows[row].cells[cell].appendChild(text);
+
+    //Si non, on ajoute l'utilisateur à la liste global (et on déroule le reste de la fonction generateTable)
+    } else {
+      globalList.push(data);
+    }
+    return nvx
+  }
+
+
+  //Exécute les deux fonctions
+  let table = document.querySelector("table");
+  generateTHead(table);
+  generateTable(table, users);
+
+</script>
